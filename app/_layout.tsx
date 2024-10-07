@@ -1,37 +1,37 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import React, { useEffect } from "react";
+import { Slot, useRouter, useSegments } from "expo-router";
+import { SessionProvider, useSession } from "../context/context";
+import { MenuProvider } from "react-native-popup-menu";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const MainLayout = () => {
+  const { isAuthenticated } = useSession();
+  const segments = useSegments();
+  const router = useRouter();
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  console.log("segments: ", segments);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (isAuthenticated === undefined) return;
+    const inApp = segments[0] == "(app)";
+    if (isAuthenticated && !inApp) {
+      // if user is authenticated
+      router.replace("/Home");
+    } else if (isAuthenticated === false) {
+      // if user is not authenticated
+      router.replace("/SignIn");
     }
-  }, [loaded]);
+  }, [isAuthenticated]);
 
-  if (!loaded) {
-    return null;
-  }
+  return <Slot />;
+};
 
+export default function RootLayout() {
+  // Set up the auth context and render our layout inside of it.
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <MenuProvider>
+      <SessionProvider>
+        <MainLayout />
+      </SessionProvider>
+    </MenuProvider>
   );
 }
