@@ -26,7 +26,6 @@ const MainLayout = () => {
 };
 
 export default function RootLayout() {
-  // Set up the auth context and render our layout inside of it.
   return (
     <MenuProvider>
       <SessionProvider>
