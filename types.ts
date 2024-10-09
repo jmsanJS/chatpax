@@ -5,6 +5,11 @@ export interface UsersProps {
   router?: Router;
 };
 
+export interface UserProps {
+  user: UserData;
+  router: Router;
+}
+
 export interface UserData {
   profileUrl: string;
   userId: string;
