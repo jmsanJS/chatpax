@@ -24,6 +24,7 @@ export interface ItemProps {
 
 export interface Children {
   children: React.ReactNode;
+  inChat: boolean | undefined;
 }
 
 export interface MenuItemsProps {

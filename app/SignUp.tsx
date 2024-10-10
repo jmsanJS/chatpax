@@ -17,6 +17,7 @@ import {
 import Loading from "@/components/Loading";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
+import { StatusBar } from "expo-status-bar";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -49,8 +50,8 @@ export default function SignUp() {
   };
 
   return (
-    <CustomKeyboardView>
-      {/* <StatusBar style="dark" /> */}
+    <CustomKeyboardView inChat={false}>
+      <StatusBar style="dark" />
       <View style={styles.container}>
         <Text style={styles.title}>Sign Up</Text>
         <View style={styles.inputContainer}>

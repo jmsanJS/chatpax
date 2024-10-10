@@ -55,7 +55,7 @@ export default function SignIn() {
   };
 
   return (
-    <CustomKeyboardView>
+    <CustomKeyboardView inChat={false}>
       <StatusBar style="dark" />
       <View style={styles.container}>
         <Text style={styles.title}>Sign In</Text>
