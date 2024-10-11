@@ -4,6 +4,7 @@ import { Timestamp } from "firebase/firestore";
 export interface UsersProps {
   users: UserData[];
   router?: Router;
+  currentUser: UserData;
 };
 
 export interface UserProps {
@@ -21,6 +22,7 @@ export interface ItemProps {
   item: UserData;
   index: number;
   router: Router;
+  currentUser: UserData;
 };
 
 export interface Children {
@@ -44,6 +46,6 @@ export interface MessageProps {
 }
 
 export interface MessageItemProps {
-  message: MessageProps,
-  currentUser: UserData
+  message: MessageProps;
+  currentUser: UserData;
 }
