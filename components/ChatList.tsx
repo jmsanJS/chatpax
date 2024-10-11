@@ -4,7 +4,7 @@ import ChatItem from "./ChatItem";
 import { useRouter } from "expo-router";
 import { UsersProps } from "@/types";
 
-export default function ChatList({ users }: UsersProps) {
+export default function ChatList({ users, currentUser }: UsersProps) {
   const router = useRouter();
 
   return (
@@ -14,7 +14,14 @@ export default function ChatList({ users }: UsersProps) {
         contentContainerStyle={{ flex: 1 }}
         keyExtractor={(item) => item.userId}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item, index }) => <ChatItem item={item} index={index} router={router}/>}
+        renderItem={({ item, index }) => (
+          <ChatItem
+            item={item}
+            index={index}
+            router={router}
+            currentUser={currentUser}
+          />
+        )}
       />
     </View>
   );
