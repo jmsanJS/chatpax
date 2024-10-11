@@ -8,7 +8,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { truncate } from "@/modules/truncate";
+import { truncateUsername } from "@/modules/truncateText";
 
 export default function ChatRoomHeader({ user, router }: UserProps) {
   return (
@@ -29,7 +29,7 @@ export default function ChatRoomHeader({ user, router }: UserProps) {
               <View style={styles.usersInfoContainer}>
                 <Image source={user?.profileUrl} style={styles.image} />
                 <Text style={styles.username}>
-                    {truncate(user?.username)}
+                    {truncateUsername(user?.username)}
                 </Text>
               </View>
             </View>

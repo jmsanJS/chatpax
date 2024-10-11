@@ -1,10 +1,11 @@
 import {
   View,
-  Text,
+  ScrollView,
   StyleSheet,
   TextInput,
   Pressable,
   Alert,
+  Keyboard,
 } from "react-native";
 import React, { useEffect, useRef } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -19,7 +20,7 @@ import {
 } from "react-native-responsive-screen";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
 import { UserData } from "@/types";
-import { getRoomId } from "@/constants/getRoomId";
+import { getRoomId } from "@/modules/getRoomId";
 import {
   addDoc,
   collection,
@@ -41,6 +42,7 @@ export default function ChatRoom() {
   const [messages, setMessages] = useState<DocumentData[]>([]);
   const textRef = useRef("");
   const inputRef = useRef<TextInput>(null);
+  const lastMsgScrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     createRoomIfNotExists();
@@ -56,8 +58,27 @@ export default function ChatRoom() {
       });
       setMessages([...allMessages]);
     });
-    return unsubscribe;
+
+    const KeyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      updateLastMsgScrollView
+    );
+
+    return () => {
+      unsubscribe;
+      KeyboardDidShowListener.remove();
+    };
   }, []);
+
+  useEffect(() => {
+    updateLastMsgScrollView();
+  }, [messages]);
+
+  const updateLastMsgScrollView = () => {
+    setTimeout(() => {
+      lastMsgScrollViewRef?.current?.scrollToEnd({ animated: true });
+    }, 100);
+  };
 
   const handleSendMessageClick = async () => {
     let message = textRef.current.trim();
@@ -77,13 +98,11 @@ export default function ChatRoom() {
       if (inputRef) {
         return inputRef?.current?.clear();
       }
-
     } catch (error) {
       Alert.alert("Failed to send message");
     }
   };
 
-  console.log("user chatroom: " + user.userId);
   const createRoomIfNotExists = async () => {
     let roomId = getRoomId(user?.userId, item?.userId);
     await setDoc(doc(db, "rooms", roomId), {
@@ -100,9 +119,12 @@ export default function ChatRoom() {
         <View style={styles.headerLine}></View>
         <View style={styles.msgsContainer}>
           <View style={{ flex: 1 }}>
-            <MessageList messages={messages} currentUser={user} />
+            <MessageList
+              lastMsgScrollViewRef={lastMsgScrollViewRef}
+              messages={messages}
+              currentUser={user}
+            />
           </View>
-          {/* <View style={{ marginBottom: hp(2.5) }}> */}
           <View style={styles.userMsgContainer}>
             <TextInput
               placeholder="Type message..."
@@ -114,7 +136,6 @@ export default function ChatRoom() {
               <MaterialIcons name="send" size={hp(2.7)} color="magenta" />
             </Pressable>
           </View>
-          {/* </View> */}
         </View>
       </View>
     </CustomKeyboardView>
