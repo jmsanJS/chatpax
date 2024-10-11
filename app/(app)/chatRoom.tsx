@@ -1,5 +1,12 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Alert,
+} from "react-native";
+import React, { useEffect, useRef } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import ChatRoomHeader from "@/components/ChatRoomHeader";
@@ -12,13 +19,79 @@ import {
 } from "react-native-responsive-screen";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
 import { UserData } from "@/types";
+import { getRoomId } from "@/constants/getRoomId";
+import {
+  addDoc,
+  collection,
+  doc,
+  DocumentData,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { useSession } from "@/context/context";
 
 export default function ChatRoom() {
   const item = useLocalSearchParams() as unknown as UserData;
   const router = useRouter();
-  const [messages, setMessages] = useState([]);
+  const { user } = useSession();
+  const [messages, setMessages] = useState<DocumentData[]>([]);
+  const textRef = useRef("");
+  const inputRef = useRef<TextInput>(null);
 
-  console.log("params: ", item);
+  useEffect(() => {
+    createRoomIfNotExists();
+
+    let roomId = getRoomId(user?.userId, item?.userId);
+    const docRef = doc(db, "rooms", roomId);
+    const messagedRef = collection(docRef, "messages");
+    const q = query(messagedRef, orderBy("createdAt", "asc"));
+
+    let unsubscribe = onSnapshot(q, (snapshot) => {
+      let allMessages = snapshot.docs.map((doc) => {
+        return doc.data();
+      });
+      setMessages([...allMessages]);
+    });
+    return unsubscribe;
+  }, []);
+
+  const handleSendMessageClick = async () => {
+    let message = textRef.current.trim();
+    if (!message) return;
+    try {
+      let roomId = getRoomId(user?.userId, item?.userId);
+      const docRef = doc(db, "rooms", roomId);
+      const messagesRef = collection(docRef, "messages");
+      textRef.current = "";
+      const newDoc = await addDoc(messagesRef, {
+        userId: user?.userId,
+        text: message,
+        profileUrl: user?.profileUrl,
+        senderName: user?.username,
+        createdAt: Timestamp.fromDate(new Date()),
+      });
+      if (inputRef) {
+        return inputRef?.current?.clear();
+      }
+
+    } catch (error) {
+      Alert.alert("Failed to send message");
+    }
+  };
+
+  console.log("user chatroom: " + user.userId);
+  const createRoomIfNotExists = async () => {
+    let roomId = getRoomId(user?.userId, item?.userId);
+    await setDoc(doc(db, "rooms", roomId), {
+      roomId,
+      createdAt: Timestamp.fromDate(new Date()),
+    });
+  };
+
   return (
     <CustomKeyboardView inChat={true}>
       <View style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -27,15 +100,20 @@ export default function ChatRoom() {
         <View style={styles.headerLine}></View>
         <View style={styles.msgsContainer}>
           <View style={{ flex: 1 }}>
-            <MessageList messages={messages} />
+            <MessageList messages={messages} currentUser={user} />
           </View>
           {/* <View style={{ marginBottom: hp(2.5) }}> */}
-            <View style={styles.userMsgContainer}>
-              <TextInput placeholder="Type message..." style={styles.input} />
-              <Pressable style={styles.sendBtn}>
-                <MaterialIcons name="send" size={hp(2.7)} color="magenta" />
-              </Pressable>
-            </View>
+          <View style={styles.userMsgContainer}>
+            <TextInput
+              placeholder="Type message..."
+              style={styles.input}
+              onChangeText={(value) => (textRef.current = value)}
+              ref={inputRef}
+            />
+            <Pressable style={styles.sendBtn} onPress={handleSendMessageClick}>
+              <MaterialIcons name="send" size={hp(2.7)} color="magenta" />
+            </Pressable>
+          </View>
           {/* </View> */}
         </View>
       </View>
@@ -52,7 +130,7 @@ const styles = StyleSheet.create({
   msgsContainer: {
     flex: 1,
     justifyContent: "space-between",
-    backgroundColor: "#eedfff",
+    backgroundColor: "#eee5ff",
   },
   userMsgContainer: {
     flexDirection: "row",
