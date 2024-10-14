@@ -6,26 +6,27 @@ import { useState, useEffect } from "react";
 import ChatList from "@/components/ChatList";
 import { usersRef } from "@/firebaseConfig";
 import { getDocs, query, where } from "firebase/firestore";
+import { UserData } from "@/types";
 
 export default function Home() {
   const { user } = useSession();
   const router = useRouter();
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<UserData[]>([]);
 
   useEffect(() => {
     if (user?.uid) {
       getUsers();
     }
-    return () => {};
   }, []);
 
+  // fetch users that are not logged in
   const getUsers = async () => {
-    // fetch users that are not logged in
     const q = query(usersRef, where("userId", "!=", user?.uid));
     const querySnapshot = await getDocs(q);
-    let data: any = []; // :UserData
+
+    let data: UserData[] = [];
     querySnapshot.forEach((doc) => {
-      data.push({ ...doc.data() });
+      data.push({ ...doc.data() } as UserData);
     });
     setUsers(data);
   };
@@ -34,7 +35,7 @@ export default function Home() {
     <View style={styles.container}>
       <StatusBar style="light" />
       {users.length > 0 ? (
-        <ChatList users={users} router={router} />
+        <ChatList users={users} router={router} currentUser={user}/>
       ) : (
         <View style={{ flex: 1, alignItems: "center", paddingTop: 30 }}>
           <ActivityIndicator size="large" />

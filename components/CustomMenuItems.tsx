@@ -29,5 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  menuIcon: { fontSize: hp(2.5) },
+  menuIcon: {
+    fontSize: hp(2),
+  },
 });
