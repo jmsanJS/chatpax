@@ -18,7 +18,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Loading from "@/components/Loading";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
 
-export default function SignIn() {
+export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ export default function SignIn() {
         console.log("Sign in successful:", response.data);
         // Redirect to chatroom
         setLoading(false);
-        router.push("/(app)/Home");
+        router.push("/(app)/home");
       } else {
         Alert.alert("Something went wrong...",response.error);
       }
@@ -115,7 +115,7 @@ export default function SignIn() {
           <Text style={{ color: "gray", fontWeight: "500", fontSize: 16 }}>
             Don't have an account?{" "}
           </Text>
-          <Pressable onPress={() => router.push("/SignUp")}>
+          <Pressable onPress={() => router.push("/signUp")}>
             <Text style={{ color: "magenta", fontWeight: "500", fontSize: 16 }}>
               Sign Up
             </Text>

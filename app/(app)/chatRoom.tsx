@@ -35,7 +35,7 @@ import {
 import { db } from "@/firebaseConfig";
 import { useSession } from "@/context/context";
 
-export default function ChatRoom() {
+export default function ChatRoomScreen() {
   const item = useLocalSearchParams() as unknown as UserData;
   const router = useRouter();
   const { user } = useSession();

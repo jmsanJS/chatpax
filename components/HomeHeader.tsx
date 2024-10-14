@@ -21,11 +21,13 @@ export default function HomeHeader() {
   const router = useRouter();
   const { user, signOut } = useSession();
 
-  const handleProfile = () => {};
+  const handleProfile = () => {
+    router.replace("/profile");
+  };
 
   const handleSignOutClick = async () => {
     await signOut();
-    router.replace("/SignIn");
+    router.replace("/signIn");
   };
   return (
     <View style={styles.headerContainer}>

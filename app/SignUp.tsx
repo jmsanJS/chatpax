@@ -19,7 +19,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
 import { StatusBar } from "expo-status-bar";
 
-export default function SignUp() {
+export default function SignUpScreen() {
   const [username, setUsername] = useState("");
   const [profileUrl, setProfileUrl] = useState("");
   const [email, setEmail] = useState("");
@@ -38,7 +38,7 @@ export default function SignUp() {
     try {
       const response = await signUp(email, password, username, profileUrl);
       if (response.success) {
-        router.push('/(app)/Home');
+        router.push('/(app)/home');
       } else {
         Alert.alert("Oups!",response.error);
       }
@@ -148,7 +148,7 @@ export default function SignUp() {
           <Text style={{ color: "gray", fontWeight: "500", fontSize: 16 }}>
             Do you have an account?{" "}
           </Text>
-          <Pressable onPress={() => router.push("/SignIn")}>
+          <Pressable onPress={() => router.push("/signIn")}>
             <Text style={{ color: "magenta", fontWeight: "500", fontSize: 16 }}>
               Sign In
             </Text>

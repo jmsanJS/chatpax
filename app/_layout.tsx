@@ -15,10 +15,10 @@ const MainLayout = () => {
     const inApp = segments[0] == "(app)";
     if (isAuthenticated && !inApp) {
       // if user is authenticated
-      router.replace("/Home");
+      router.replace("/home");
     } else if (isAuthenticated === false) {
       // if user is not authenticated
-      router.replace("/SignIn");
+      router.replace("/signIn");
     }
   }, [isAuthenticated]);
 

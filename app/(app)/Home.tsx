@@ -8,7 +8,7 @@ import { usersRef } from "@/firebaseConfig";
 import { getDocs, query, where } from "firebase/firestore";
 import { UserData } from "@/types";
 
-export default function Home() {
+export default function HomeScreen() {
   const { user } = useSession();
   const router = useRouter();
   const [users, setUsers] = useState<UserData[]>([]);
