@@ -21,8 +21,8 @@ export default function HomeHeader() {
   const router = useRouter();
   const { user, signOut } = useSession();
 
-  const handleProfile = () => {
-    router.replace("/profile");
+  const handleSettings = () => {
+    router.replace("/settings");
   };
 
   const handleSignOutClick = async () => {
@@ -52,11 +52,11 @@ export default function HomeHeader() {
           </MenuTrigger>
           <MenuOptions>
             <CustomMenuItems
-              text="Profile"
-              action={handleProfile}
+              text="Settings"
+              action={handleSettings}
               value={null}
               icon={
-                <MaterialIcons name="person-outline" size={24} color="black" />
+                <MaterialIcons name="settings" size={24} color="black" />
               }
             />
             <View style={styles.line}></View>
