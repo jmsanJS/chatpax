@@ -12,9 +12,10 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, DocumentData, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import { UserData } from "@/types";
 
 const AuthContext = createContext<{
   signIn: (
@@ -30,7 +31,8 @@ const AuthContext = createContext<{
   ) => Promise<{ success: boolean; data?: any; error?: string }>;
   session?: string | null;
   isLoading: boolean;
-  user: any;
+  user: DocumentData | null;
+  setUser: (user: DocumentData | null) => void;
   isAuthenticated: boolean | undefined;
 }>({
   signIn: () =>
@@ -41,6 +43,7 @@ const AuthContext = createContext<{
   session: null,
   isLoading: false,
   user: null,
+  setUser: () => {},
   isAuthenticated: undefined,
 });
 
@@ -55,23 +58,8 @@ export function useSession() {
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<DocumentData | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(false);
-
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (newUser) => {
-  //     if (newUser) {
-  //       console.log("user del useEffect unsubscribe: ", newUser);
-  //       // setIsAuthenticated(true);
-  //       updateUserData(newUser.uid);
-  //       setUser(newUser);
-  //     } else {
-  //       // setIsAuthenticated(false);
-  //       setUser(null);
-  //     }
-  //   });
-  //   return unsubscribe;
-  // }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (newUser) => {
@@ -197,6 +185,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
           }
         },
         user,
+        setUser,
         isAuthenticated,
         session,
         isLoading,
