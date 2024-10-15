@@ -18,7 +18,7 @@ export default function SettingsHeader({ user, router }: UserProps) {
           headerShadowVisible: false,
           header: () => (
             <View style={styles.headerContainer}>
-              <View style={{ width: wp(90)}}>
+              <View style={{ width: wp(90) }}>
                 <Pressable onPress={() => router.replace("/(app)/home")}>
                   <MaterialIcons
                     name="chevron-left"
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: hp(6),
-
+    backgroundColor: "#fff",
   },
   headerRightContainer: {
     flexDirection: "row",
