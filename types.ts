@@ -1,5 +1,5 @@
 import { Router } from "expo-router";
-import { Timestamp } from "firebase/firestore";
+import { DocumentData, Timestamp } from "firebase/firestore";
 
 export interface UsersProps {
   users: UserData[];
@@ -8,7 +8,7 @@ export interface UsersProps {
 };
 
 export interface UserProps {
-  user: UserData;
+  user?: DocumentData | UserData | null;
   router: Router;
 }
 
