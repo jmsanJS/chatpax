@@ -38,9 +38,9 @@ export default function SignUpScreen() {
     try {
       const response = await signUp(email, password, username, profileUrl);
       if (response.success) {
-        router.push('/(app)/home');
+        router.push("/(app)/home");
       } else {
-        Alert.alert("Oups!",response.error);
+        Alert.alert("Oups!", response.error);
       }
     } catch (error) {
       Alert.alert("Sign Up Error", "Something went wrong. Please try again.");
@@ -83,6 +83,7 @@ export default function SignUpScreen() {
             value={email}
             placeholder="Email"
             placeholderTextColor={"gray"}
+            inputMode="email"
             autoCapitalize="none"
           />
         </View>
@@ -100,6 +101,7 @@ export default function SignUpScreen() {
             placeholder="Password"
             placeholderTextColor={"gray"}
             secureTextEntry
+            enablesReturnKeyAutomatically={true}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -131,7 +133,10 @@ export default function SignUpScreen() {
         </View>
         <View>
           {loading ? (
-            <Loading />
+            <Pressable onPress={handleSignUpClick} style={styles.btn}>
+              <Loading />
+              <Text style={styles.btnText}>Sign Up</Text>
+            </Pressable>
           ) : (
             <Pressable onPress={handleSignUpClick} style={styles.btn}>
               <Text style={styles.btnText}>Sign Up</Text>
@@ -188,7 +193,7 @@ const styles = StyleSheet.create({
     fontSize: hp(2.5),
     letterSpacing: 0.5,
     height: 60,
-    width: wp(80),
+    width: wp(75),
     borderColor: "#eee",
     borderWidth: 1,
     backgroundColor: "#eee",
@@ -209,12 +214,15 @@ const styles = StyleSheet.create({
     color: "gray",
     fontWeight: "500",
     fontSize: 16,
-    width: wp(80),
+    width: wp(75),
     marginTop: 10,
     marginBottom: 25,
   },
   btn: {
-    width: wp(90),
+    width: wp(85),
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "magenta",
     borderColor: "magenta",
     borderWidth: 1,
@@ -228,4 +236,4 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     padding: 15,
   },
-})
+});

@@ -1,13 +1,17 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import React from "react";
-import LottieView, { AnimatedLottieViewProps } from "lottie-react-native";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import LottieView from "lottie-react-native";
+import { usePathname } from "expo-router";
 
 export default function Loading() {
+  const actualPath = usePathname();
+  const paths = ["/signUp", "/signIn"];
+  const size = paths.includes(actualPath) ? 60 : 50;
+
   return (
-    <View style={styles.btn}>
+    <View>
       <LottieView
-        style={styles.loading}
+        style={{ height: size }}
         source={require("../assets/images/loading.json")}
         autoPlay
         loop
@@ -15,17 +19,3 @@ export default function Loading() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  btn: {
-    width: wp(90),
-    backgroundColor: "magenta",
-    borderColor: "magenta",
-    borderWidth: 1,
-    borderRadius: 10,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loading: { height: 60 }
-});
