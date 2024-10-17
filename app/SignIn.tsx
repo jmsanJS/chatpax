@@ -36,15 +36,15 @@ export default function SignInScreen() {
       setLoading(false);
 
       if (response.success) {
-        console.log("Sign in successful:", response.data);
-        // Redirect to chatroom
-        setLoading(false);
         router.push("/(app)/home");
       } else {
-        Alert.alert("Something went wrong...", response.error);
+        if (response.error === "Firebase: Error (auth/user-not-found).") {
+          Alert.alert("Email address not found. Please try again.");
+        } else {
+          Alert.alert("Something went wrong...", response.error);
+        }
       }
     } catch (error) {
-      console.error("Sign In Error:", error);
       Alert.alert("Sign In Error", "Something went wrong. Please try again.");
       setLoading(false);
     }

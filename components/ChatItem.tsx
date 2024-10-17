@@ -106,6 +106,8 @@ const styles = StyleSheet.create({
     height: hp(12),
     width: wp(12),
     borderRadius: 100,
+    borderWidth: 1,
+    borderColor: "magenta",
   },
   nameAndTimeContainer: {
     flexDirection: "row",

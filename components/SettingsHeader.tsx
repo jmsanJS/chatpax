@@ -8,6 +8,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { UserProps } from "@/types";
+import { blurhash } from "@/constants/blurhash";
 
 export default function SettingsHeader({ user, router }: UserProps) {
   return (
@@ -28,7 +29,7 @@ export default function SettingsHeader({ user, router }: UserProps) {
                 </Pressable>
               </View>
               <View style={styles.usersInfoContainer}>
-                <Image source={user?.profileUrl} style={styles.image} />
+                <Image source={user?.profileUrl} style={styles.image} placeholder={{ blurhash }}/>
                 <Text style={styles.username}>{user?.username}</Text>
               </View>
             </View>
@@ -68,7 +69,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     aspectRatio: 1,
     borderRadius: 100,
-    // borderWidth: 2,
-    // borderColor: "#fff",
   },
 });
