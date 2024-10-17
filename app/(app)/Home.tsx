@@ -14,14 +14,14 @@ export default function HomeScreen() {
   const [users, setUsers] = useState<UserData[]>([]);
 
   useEffect(() => {
-    if (user?.uid) {
+    if (user?.userId) {
       getUsers();
     }
-  }, []);
+  }, [user?.userId]);
 
   // fetch users that are not logged in
   const getUsers = async () => {
-    const q = query(usersRef, where("userId", "!=", user?.uid));
+    const q = query(usersRef, where("userId", "!=", user?.userId));
     const querySnapshot = await getDocs(q);
 
     let data: UserData[] = [];

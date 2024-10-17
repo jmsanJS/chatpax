@@ -4,7 +4,7 @@ import { DocumentData, Timestamp } from "firebase/firestore";
 export interface UsersProps {
   users: UserData[];
   router?: Router;
-  currentUser: UserData;
+  currentUser: DocumentData | UserData | null;
 };
 
 export interface UserProps {
@@ -22,7 +22,7 @@ export interface ItemProps {
   item: UserData;
   index: number;
   router: Router;
-  currentUser: UserData;
+  currentUser: DocumentData | UserData | null;
 };
 
 export interface Children {
