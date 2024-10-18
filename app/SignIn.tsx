@@ -40,6 +40,8 @@ export default function SignInScreen() {
       } else {
         if (response.error === "Firebase: Error (auth/user-not-found).") {
           Alert.alert("Email address not found. Please try again.");
+        } else if (response.error === "Firebase: Error (auth/wrong-password).") {
+          Alert.alert("Your password is incorrect. Please try again.");
         } else {
           Alert.alert("Something went wrong...", response.error);
         }
@@ -51,7 +53,7 @@ export default function SignInScreen() {
   };
 
   const handleForgotPasswordClick = () => {
-    console.log("handleForgotPasswordClick");
+    router.push("/forgotPassword");
   };
 
   return (
@@ -68,7 +70,7 @@ export default function SignInScreen() {
           />
           <TextInput
             style={styles.input}
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={(value) => setEmail(value)}
             value={email}
             placeholder="Email"
             placeholderTextColor={"gray"}
@@ -85,7 +87,7 @@ export default function SignInScreen() {
           />
           <TextInput
             style={styles.input}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={(value) => setPassword(value)}
             value={password}
             placeholder="Password"
             placeholderTextColor={"gray"}
