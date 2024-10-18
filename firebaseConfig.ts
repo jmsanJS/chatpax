@@ -24,3 +24,15 @@ export const db = getFirestore(app);
 // Collections
 export const usersRef = collection(db, 'users');
 export const roomRef = collection(db, 'rooms');
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Only in development
+export const clearAsyncStorage = async () => {
+  try {
+    await AsyncStorage.clear();
+    console.log("App data cleared.");
+  } catch (e) {
+    console.error("Failed to clear app data.", e);
+  }
+};
