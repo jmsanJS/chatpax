@@ -1,12 +1,14 @@
 import { View } from "react-native";
-import React from "react";
+import React, { useMemo } from "react";
 import LottieView from "lottie-react-native";
 import { usePathname } from "expo-router";
 
 export default function Loading() {
   const actualPath = usePathname();
-  const paths = ["/signUp", "/signIn"];
-  const size = paths.includes(actualPath) ? 60 : 50;
+  const size = useMemo(() => {
+    const paths = ["/signUp", "/signIn"];
+    return paths.includes(actualPath) ? 60 : 50;
+  }, [actualPath]);
 
   return (
     <View>
