@@ -7,7 +7,6 @@ import {
   Alert,
 } from "react-native";
 import React, { useState } from "react";
-import { useSession } from "@/context/context";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -44,26 +43,15 @@ export default function ForgotPasswordScreen() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          title: "",
-          headerShadowVisible: false,
-          header: () => (
-            <View style={styles.headerContainer}>
-              <View style={styles.linkContainer}>
-                <Pressable onPress={() => router.back()}>
-                  <MaterialIcons
-                    name="chevron-left"
-                    size={hp(4)}
-                    color="magenta"
-                  />
-                </Pressable>
-                <Text style={styles.linkText}>sign in</Text>
-              </View>
-            </View>
-          ),
-        }}
-      />
+      <View style={styles.headerContainer}>
+        <View style={{width: wp(90)}}>
+          <Pressable onPress={() => router.back()} style={styles.linkContainer}>
+            <MaterialIcons name="chevron-left" size={hp(4)} color="magenta" />
+            <Text style={styles.linkText}>sign in</Text>
+          </Pressable>
+        </View>
+      </View>
+
       <View style={styles.container}>
         <View style={styles.formContainer}>
           <Text style={styles.title}>Reset your password</Text>
@@ -98,7 +86,8 @@ export default function ForgotPasswordScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    paddingTop: hp(22),
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#fff",
   },
@@ -109,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   linkContainer: {
-    width: wp(90),
+    width: wp(25),
     flexDirection: "row",
     alignItems: "center",
   },
