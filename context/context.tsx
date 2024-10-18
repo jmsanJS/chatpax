@@ -15,7 +15,6 @@ import {
 import { doc, DocumentData, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import { UserData } from "@/types";
 
 const AuthContext = createContext<{
   signIn: (
@@ -27,7 +26,7 @@ const AuthContext = createContext<{
     email: string,
     password: string,
     username: string,
-    profileUrl: string | null,
+    profileUrl: string | null
   ) => Promise<{ success: boolean; data?: any; error?: string }>;
   session?: string | null;
   isLoading: boolean;
@@ -35,11 +34,9 @@ const AuthContext = createContext<{
   setUser: (user: DocumentData | null) => void;
   isAuthenticated: boolean | undefined;
 }>({
-  signIn: () =>
-    Promise.resolve({ success: false, data: null, error: "Error" }),
+  signIn: () => Promise.resolve({ success: false, data: null, error: "Error" }),
   signOut: () => Promise.resolve({ success: false, error: "Error" }),
-  signUp: () =>
-    Promise.resolve({ success: false, data: null, error: "Error" }),
+  signUp: () => Promise.resolve({ success: false, data: null, error: "Error" }),
   session: null,
   isLoading: false,
   user: null,
@@ -59,7 +56,9 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
   const [user, setUser] = useState<DocumentData | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
+    false
+  );
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (newUser) => {
@@ -76,17 +75,20 @@ export function SessionProvider({ children }: PropsWithChildren) {
   }, []);
 
   const updateUserData = async (userId: string) => {
-    const refDoc = doc(db, "users", userId);
-    const docSnapshot = await getDoc(refDoc);
+    try {
+      const refDoc = doc(db, "users", userId);
+      const docSnapshot = await getDoc(refDoc);
 
-    if (docSnapshot.exists()) {
-      const data = docSnapshot.data();
-      setUser({
-        ...user,
-        username: data.username,
-        profileUrl: data.profileUrl,
-        userId: data.userId,
-      });
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        setUser({
+          username: data.username,
+          profileUrl: data.profileUrl,
+          userId: data.userId,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching user data: ", error);
     }
   };
 
@@ -118,10 +120,19 @@ export function SessionProvider({ children }: PropsWithChildren) {
             if (errorMessage === "Firebase: Error (auth/invalid-credential).") {
               return { success: false, error: "Wrong email or password" };
             }
-            if (errorMessage === "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).") {
-              return { success: false, error: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later." };
+            if (
+              errorMessage ===
+              "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)."
+            ) {
+              return {
+                success: false,
+                error:
+                  "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
+              };
             }
-            if (errorMessage === "Firebase: Error (auth/email-already-in-use).") {
+            if (
+              errorMessage === "Firebase: Error (auth/email-already-in-use)."
+            ) {
               return { success: false, error: "This mail is already in use" };
             }
             return { success: false, error: errorMessage };
@@ -175,10 +186,19 @@ export function SessionProvider({ children }: PropsWithChildren) {
             if (errorMessage === "Firebase: Error (auth/invalid-credential).") {
               return { success: false, error: "Wrong email or password" };
             }
-            if (errorMessage === "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).") {
-              return { success: false, error: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later." };
+            if (
+              errorMessage ===
+              "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)."
+            ) {
+              return {
+                success: false,
+                error:
+                  "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
+              };
             }
-            if (errorMessage === "Firebase: Error (auth/email-already-in-use).") {
+            if (
+              errorMessage === "Firebase: Error (auth/email-already-in-use)."
+            ) {
               return { success: false, error: "This email is already in use" };
             }
             return { success: false, error: errorMessage };
