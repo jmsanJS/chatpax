@@ -11,12 +11,13 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 
 export default function SettingsScreen() {
-  const { user } = useSession();
+  const { user, signOut } = useSession();
   const router = useRouter();
 
-  const handleDeleteAccount = () => {
-    console.log("handleDeleteAccount");
-  }
+  const handleSignOutClick = async () => {
+    await signOut();
+    router.replace("/signIn");
+  };
 
   return (
     <View style={styles.container}>
@@ -24,45 +25,117 @@ export default function SettingsScreen() {
         <StatusBar style="dark" />
         <ProfileHeader user={user} router={router} />
       </View>
-      <View style={{ padding: 30 }}>
-        <View style={styles.settingsContainer}>
-          <Pressable
-            onPress={() => router.push("/(app)/updateUsername")}
-            style={styles.settingsOptions}
+      <View style={styles.settingsContainer}>
+        <Pressable
+          onPress={() => router.push("/(app)/updateUsername")}
+          style={styles.settingsOptions}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Text style={styles.optionText}>Update your username</Text>
-            <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
-          </Pressable>
-          <Pressable
-            onPress={() => router.push("/(app)/updatePhoto")}
-            style={styles.settingsOptions}
+            <MaterialIcons
+              name="person"
+              size={hp(3)}
+              color="gray"
+              style={{ paddingHorizontal: 15 }}
+            />
+            <Text style={styles.optionText}>Change your username</Text>
+          </View>
+          <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
+        </Pressable>
+        <Pressable
+          onPress={() => router.push("/(app)/updatePhoto")}
+          style={styles.settingsOptions}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Text style={styles.optionText}>Update your photo</Text>
-            <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
-          </Pressable>
-          <Pressable
-            onPress={() => router.push("/(app)/updateEmail")}
-            style={styles.settingsOptions}
+            <MaterialIcons
+              name="image"
+              size={hp(3)}
+              color="gray"
+              style={{ paddingHorizontal: 15 }}
+            />
+            <Text style={styles.optionText}>Change your profile picture</Text>
+          </View>
+          <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
+        </Pressable>
+        <Pressable
+          onPress={() => router.push("/(app)/updateEmail")}
+          style={styles.settingsOptions}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Text style={styles.optionText}>Update your email</Text>
-            <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
-          </Pressable>
-          <Pressable
-            onPress={() => router.push("/(app)/updatePassword")}
-            style={styles.settingsOptions}
+            <MaterialIcons
+              name="mail-outline"
+              size={hp(3)}
+              color="gray"
+              style={{ paddingHorizontal: 15 }}
+            />
+            <Text style={styles.optionText}>Update your email address</Text>
+          </View>
+          <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
+        </Pressable>
+        <Pressable
+          onPress={() => router.push("/(app)/updatePassword")}
+          style={styles.lastSettingsOptions}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Text style={styles.optionText}>Update your password</Text>
-            <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
-          </Pressable>
-          <Pressable
-            onPress={handleDeleteAccount}
-            style={styles.settingsOptions}
-          >
-            <Text style={styles.optionText}>Delete your account</Text>
-            <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
-          </Pressable>
-        </View>
+            <MaterialIcons
+              name="password"
+              size={hp(3)}
+              color="gray"
+              style={{ paddingHorizontal: 15 }}
+            />
+            <Text style={styles.optionText}>Change your password</Text>
+          </View>
+          <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
+        </Pressable>
       </View>
+      <Pressable
+        onPress={() => router.push("/(app)/deleteAccount")}
+        style={styles.settingsOptions && styles.delete}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <MaterialIcons
+            name="delete-outline"
+            size={hp(3)}
+            color="gray"
+            style={{ paddingHorizontal: 15 }}
+          />
+          <Text style={styles.optionText}>Delete your account</Text>
+        </View>
+        <MaterialIcons name="chevron-right" size={hp(3)} color="black" />
+      </Pressable>
+      <Pressable onPress={handleSignOutClick} style={styles.logout}>
+        <MaterialIcons name="logout" size={24} color="gray" />
+        <Text style={styles.logoutText}>Log out</Text>
+      </Pressable>
     </View>
   );
 }
@@ -70,17 +143,67 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
     backgroundColor: "#fff",
   },
-  settingsContainer: {},
+  settingsContainer: {
+    marginTop: 30,
+    width: wp(80),
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 5,
+  },
   settingsOptions: {
-    borderWidth: 1,
-    padding: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "gray",
+    paddingVertical: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  lastSettingsOptions: {
+    paddingVertical: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
   optionText: {
     fontSize: hp(2),
+  },
+  delete: {
+    marginTop: 25,
+    width: wp(80),
+    paddingVertical: 15,
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  logout: {
+    position: "absolute",
+    bottom: 20,
+    width: wp(60),
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "magenta",
+    padding: 10,
+  },
+  logoutText: {
+    fontSize: hp(2),
+    marginLeft: 10,
+    color: "gray",
+    fontWeight: "500",
   },
 });
