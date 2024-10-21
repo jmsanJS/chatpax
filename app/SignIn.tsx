@@ -17,6 +17,7 @@ import { StatusBar } from "expo-status-bar";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Loading from "@/components/Loading";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
+import Animated, { FadeInUp, FadeInDown } from "react-native-reanimated";
 
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
@@ -40,7 +41,9 @@ export default function SignInScreen() {
       } else {
         if (response.error === "Firebase: Error (auth/user-not-found).") {
           Alert.alert("Email address not found. Please try again.");
-        } else if (response.error === "Firebase: Error (auth/wrong-password).") {
+        } else if (
+          response.error === "Firebase: Error (auth/wrong-password)."
+        ) {
           Alert.alert("Your password is incorrect. Please try again.");
         } else {
           Alert.alert("Something went wrong...", response.error);
@@ -60,46 +63,64 @@ export default function SignInScreen() {
     <CustomKeyboardView inChat={false}>
       <StatusBar style="dark" />
       <View style={styles.container}>
-        <Text style={styles.title}>Sign In</Text>
-        <View style={styles.inputContainer}>
-          <MaterialIcons
-            name="mail-outline"
-            size={hp(3)}
-            color="gray"
-            style={{ paddingLeft: 15 }}
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={(value) => setEmail(value)}
-            value={email}
-            placeholder="Email"
-            placeholderTextColor={"gray"}
-            inputMode="email"
-            autoCapitalize="none"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <MaterialIcons
-            name="password"
-            size={hp(3)}
-            color="gray"
-            style={{ paddingLeft: 15 }}
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={(value) => setPassword(value)}
-            value={password}
-            placeholder="Password"
-            placeholderTextColor={"gray"}
-            secureTextEntry
-            enablesReturnKeyAutomatically={true}
-          />
+        <Animated.Text
+          entering={FadeInUp.springify().mass(1)}
+          style={styles.title}
+        >
+          Sign In
+        </Animated.Text>
+        <View style={{ width: wp(85) }}>
+          <Animated.View
+            entering={FadeInDown.springify().delay(100)}
+            style={styles.inputContainer}
+          >
+            <MaterialIcons
+              name="mail-outline"
+              size={hp(3)}
+              color="gray"
+              style={{ paddingLeft: 15 }}
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={(value) => setEmail(value)}
+              value={email}
+              placeholder="Email"
+              placeholderTextColor={"gray"}
+              inputMode="email"
+              autoCapitalize="none"
+            />
+          </Animated.View>
+          <Animated.View
+            style={styles.inputContainer}
+            entering={FadeInDown.springify().delay(200)}
+          >
+            <MaterialIcons
+              name="password"
+              size={hp(3)}
+              color="gray"
+              style={{ paddingLeft: 15 }}
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={(value) => setPassword(value)}
+              value={password}
+              placeholder="Password"
+              placeholderTextColor={"gray"}
+              secureTextEntry
+              enablesReturnKeyAutomatically={true}
+            />
+          </Animated.View>
         </View>
         <Pressable onPress={handleForgotPasswordClick}>
-          <Text style={styles.forgotPwd}>Forgot password?</Text>
+          <Animated.Text
+            style={styles.forgotPwd}
+            entering={FadeInDown.springify().delay(250)}
+          >
+            Forgot password?
+          </Animated.Text>
         </Pressable>
 
-        <View>
+        <Animated.View entering={FadeInDown.springify().delay(300)}>
           {loading ? (
             <Pressable onPress={handleSignInClick} style={styles.btn}>
               <Loading />
@@ -110,24 +131,21 @@ export default function SignInScreen() {
               <Text style={styles.btnText}>Sign In</Text>
             </Pressable>
           )}
-        </View>
+        </Animated.View>
 
-        <View
+        <Animated.View
+          entering={FadeInDown.springify().delay(350)}
           style={{
             flexDirection: "row",
             justifyContent: "center",
             paddingVertical: 10,
           }}
         >
-          <Text style={{ color: "gray", fontWeight: "500", fontSize: 16 }}>
-            Don't have an account?{" "}
-          </Text>
+          <Text style={styles.signUpQuestion}>Don't have an account? </Text>
           <Pressable onPress={() => router.push("/signUp")}>
-            <Text style={{ color: "magenta", fontWeight: "500", fontSize: 16 }}>
-              Sign Up
-            </Text>
+            <Text style={styles.signUpLink}>Sign Up</Text>
           </Pressable>
-        </View>
+        </Animated.View>
       </View>
     </CustomKeyboardView>
   );
@@ -194,5 +212,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 0.5,
     padding: 15,
+  },
+  signUpQuestion: {
+    color: "gray",
+    fontWeight: "500",
+    fontSize: 16,
+  },
+  signUpLink: {
+    color: "magenta",
+    fontWeight: "500",
+    fontSize: 16,
   },
 });

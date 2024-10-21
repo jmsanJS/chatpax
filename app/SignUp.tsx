@@ -18,6 +18,7 @@ import Loading from "@/components/Loading";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
 import { StatusBar } from "expo-status-bar";
+import Animated, { FadeInUp, FadeInDown } from "react-native-reanimated";
 
 export default function SignUpScreen() {
   const [username, setUsername] = useState("");
@@ -53,8 +54,16 @@ export default function SignUpScreen() {
     <CustomKeyboardView inChat={false}>
       <StatusBar style="dark" />
       <View style={styles.container}>
-        <Text style={styles.title}>Sign Up</Text>
-        <View style={styles.inputContainer}>
+        <Animated.Text
+          entering={FadeInUp.springify().mass(1)}
+          style={styles.title}
+        >
+          Sign Up
+        </Animated.Text>
+        <Animated.View
+          entering={FadeInDown.springify().delay(100)}
+          style={styles.inputContainer}
+        >
           <MaterialIcons
             name="person"
             size={hp(3)}
@@ -69,8 +78,11 @@ export default function SignUpScreen() {
             placeholderTextColor={"gray"}
             autoCapitalize="none"
           />
-        </View>
-        <View style={styles.inputContainer}>
+        </Animated.View>
+        <Animated.View
+          entering={FadeInDown.springify().delay(150)}
+          style={styles.inputContainer}
+        >
           <MaterialIcons
             name="mail-outline"
             size={hp(3)}
@@ -86,8 +98,11 @@ export default function SignUpScreen() {
             inputMode="email"
             autoCapitalize="none"
           />
-        </View>
-        <View style={styles.inputContainer}>
+        </Animated.View>
+        <Animated.View
+          entering={FadeInDown.springify().delay(200)}
+          style={styles.inputContainer}
+        >
           <MaterialIcons
             name="password"
             size={hp(3)}
@@ -103,8 +118,11 @@ export default function SignUpScreen() {
             secureTextEntry
             enablesReturnKeyAutomatically={true}
           />
-        </View>
-        <View style={styles.inputContainer}>
+        </Animated.View>
+        <Animated.View
+          entering={FadeInDown.springify().delay(250)}
+          style={styles.inputContainer}
+        >
           <MaterialIcons
             name="image"
             size={hp(3)}
@@ -119,8 +137,11 @@ export default function SignUpScreen() {
             placeholderTextColor={"gray"}
             autoCapitalize="none"
           />
-        </View>
-        <View style={styles.termsContainer}>
+        </Animated.View>
+        <Animated.View
+          entering={FadeInDown.springify().delay(300)}
+          style={styles.termsContainer}
+        >
           <Checkbox
             style={styles.checkbox}
             color={"magenta"}
@@ -130,8 +151,8 @@ export default function SignUpScreen() {
           <Text style={styles.checkboxText}>
             By checking this box, you are agreeing to our terms of service.
           </Text>
-        </View>
-        <View>
+        </Animated.View>
+        <Animated.View entering={FadeInDown.springify().delay(350)}>
           {loading ? (
             <Pressable onPress={handleSignUpClick} style={styles.btn}>
               <Loading />
@@ -142,23 +163,20 @@ export default function SignUpScreen() {
               <Text style={styles.btnText}>Sign Up</Text>
             </Pressable>
           )}
-        </View>
-        <View
+        </Animated.View>
+        <Animated.View
+          entering={FadeInDown.springify().delay(400)}
           style={{
             flexDirection: "row",
             justifyContent: "center",
             paddingVertical: 10,
           }}
         >
-          <Text style={{ color: "gray", fontWeight: "500", fontSize: 16 }}>
-            Do you have an account?{" "}
-          </Text>
+          <Text style={styles.signInQuestion}>Do you have an account? </Text>
           <Pressable onPress={() => router.push("/signIn")}>
-            <Text style={{ color: "magenta", fontWeight: "500", fontSize: 16 }}>
-              Sign In
-            </Text>
+            <Text style={styles.signInLink}>Sign In</Text>
           </Pressable>
-        </View>
+        </Animated.View>
       </View>
     </CustomKeyboardView>
   );
@@ -235,5 +253,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 0.5,
     padding: 15,
+  },
+  signInQuestion: {
+    color: "gray",
+    fontWeight: "500",
+    fontSize: 16,
+  },
+  signInLink: {
+    color: "magenta",
+    fontWeight: "500",
+    fontSize: 16,
   },
 });
