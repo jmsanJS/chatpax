@@ -8,16 +8,13 @@ const MainLayout = () => {
   const segments = useSegments();
   const router = useRouter();
 
-  console.log("segments: ", segments);
-
   useEffect(() => {
-    if (isAuthenticated === undefined) return;
     const inApp = segments[0] == "(app)";
+    if (isAuthenticated === undefined) return;
+
     if (isAuthenticated && !inApp) {
-      // if user is authenticated
       router.replace("/home");
     } else if (isAuthenticated === false) {
-      // if user is not authenticated
       router.replace("/signIn");
     }
   }, [isAuthenticated]);
