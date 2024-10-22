@@ -13,7 +13,7 @@ export default function Loading() {
   return (
     <View>
       <LottieView
-        style={{ height: size }}
+        style={{ height: size, width: size }}
         source={require("../assets/images/loading.json")}
         autoPlay
         loop
