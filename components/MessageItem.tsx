@@ -2,6 +2,7 @@ import { StyleSheet, View, Text } from "react-native";
 import React from "react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { MessageItemProps } from "@/types";
+import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
 
 export default function MessageItem({
   message,
@@ -18,9 +19,9 @@ export default function MessageItem({
         }}
       >
         <View style={{ width: wp(80) }}>
-          <View style={styles.msgBubbleRight}>
+          <Animated.View entering={FadeInRight} style={styles.msgBubbleRight}>
             <Text style={styles.textMsg}>{message?.text}</Text>
-          </View>
+          </Animated.View>
         </View>
       </View>
     );
@@ -33,9 +34,9 @@ export default function MessageItem({
         }}
       >
         <View style={{ width: wp(80) }}>
-          <View style={styles.msgBubbleLeft}>
+          <Animated.View entering={FadeInLeft} style={styles.msgBubbleLeft}>
             <Text style={styles.textMsg}>{message?.text}</Text>
-          </View>
+          </Animated.View>
         </View>
       </View>
     );
