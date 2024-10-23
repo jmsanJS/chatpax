@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 
 export default function Index() {
   return (
     <View style={styles.container}>
       <View style={styles.main}>
-        <Text style={styles.title}>Index</Text>
         <ActivityIndicator size="large" color="gray" />
       </View>
     </View>
