@@ -45,7 +45,6 @@ export default function ChatItem({
     const docRef = doc(db, "rooms", roomId);
     const messagedRef = collection(docRef, "messages");
     const q = query(messagedRef, orderBy("createdAt", "desc"));
-
     let unsubscribe = onSnapshot(q, (snapshot) => {
       let allMessages = snapshot.docs.map((doc) => {
         return doc.data();
@@ -66,6 +65,8 @@ export default function ChatItem({
     if (lastMessage) {
       if (currentUser?.userId === lastMessage?.userId) {
         return "You: " + truncateLastMessage(lastMessage?.text);
+      } else {
+        return truncateLastMessage(lastMessage?.text);
       }
     } else {
       return "Say hi 👋";
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     height: hp(12),
     width: wp(12),
-    borderRadius: 100,
+    borderRadius: wp(6),
     borderWidth: 1,
     borderColor: "magenta",
   },
