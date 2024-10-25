@@ -27,7 +27,7 @@ export const roomRef = collection(db, 'rooms');
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Only in development
+// Only in development (use when a user is deleted manually from Firestore)
 export const clearAsyncStorage = async () => {
   try {
     await AsyncStorage.clear();
