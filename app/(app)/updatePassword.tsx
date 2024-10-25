@@ -49,8 +49,12 @@ export default function UpdateUsernameScreen() {
         router.back();
       } catch (error) {
         const errorMsg = (error as Error).message;
-        if (errorMsg === "Firebase: Error (auth/invalid-credential).") {
+        if (errorMsg.includes("auth/wrong-password")) {
           Alert.alert("Your password is incorrect. Please try again.");
+        } else if (errorMsg.includes("auth/weak-password")) {
+          Alert.alert("Your new password should be at least 6 characters.");
+        } else {
+          Alert.alert("Something went wrong. Please try again.")
         }
         setLoading(false);
       }
