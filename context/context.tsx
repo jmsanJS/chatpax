@@ -108,34 +108,29 @@ export function SessionProvider({ children }: PropsWithChildren) {
             }
             return { success: true, data: response.user };
           } catch (error: unknown) {
-            let errorMessage: string;
+            let errorMsg: string;
             if (error instanceof Error) {
-              errorMessage = error.message;
+              errorMsg = error.message;
             } else {
-              errorMessage = String(error);
+              errorMsg = String(error);
             }
-            if (errorMessage === "Firebase: Error (auth/invalid-email).") {
+            if (errorMsg.includes("auth/invalid-email")) {
               return { success: false, error: "Invalid email" };
             }
-            if (errorMessage === "Firebase: Error (auth/invalid-credential).") {
+            if (errorMsg.includes("auth/invalid-credential")) {
               return { success: false, error: "Wrong email or password" };
             }
-            if (
-              errorMessage ===
-              "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)."
-            ) {
+            if (errorMsg.includes("auth/too-many-requests")) {
               return {
                 success: false,
                 error:
                   "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
               };
             }
-            if (
-              errorMessage === "Firebase: Error (auth/email-already-in-use)."
-            ) {
+            if (errorMsg.includes("auth/email-already-in-use")) {
               return { success: false, error: "This mail is already in use" };
             }
-            return { success: false, error: errorMessage };
+            return { success: false, error: errorMsg };
           }
         },
         signOut: async () => {
@@ -146,13 +141,13 @@ export function SessionProvider({ children }: PropsWithChildren) {
             }
             return { success: true };
           } catch (error: unknown) {
-            let errorMessage: string;
+            let errorMsg: string;
             if (error instanceof Error) {
-              errorMessage = error.message;
+              errorMsg = error.message;
             } else {
-              errorMessage = String(error);
+              errorMsg = String(error);
             }
-            return { success: false, error: errorMessage };
+            return { success: false, error: errorMsg };
           }
         },
         signUp: async (email, password, username, profileUrl) => {
@@ -174,34 +169,29 @@ export function SessionProvider({ children }: PropsWithChildren) {
             }
             return { success: true, data: response.user };
           } catch (error: unknown) {
-            let errorMessage: string;
+            let errorMsg: string;
             if (error instanceof Error) {
-              errorMessage = error.message;
+              errorMsg = error.message;
             } else {
-              errorMessage = String(error);
+              errorMsg = String(error);
             }
-            if (errorMessage === "Firebase: Error (auth/invalid-email).") {
+            if (errorMsg.includes("auth/invalid-email")) {
               return { success: false, error: "Invalid email" };
             }
-            if (errorMessage === "Firebase: Error (auth/invalid-credential).") {
+            if (errorMsg.includes("auth/invalid-credential")) {
               return { success: false, error: "Wrong email or password" };
             }
-            if (
-              errorMessage ===
-              "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)."
-            ) {
+            if (errorMsg.includes("auth/too-many-requests")) {
               return {
                 success: false,
                 error:
                   "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
               };
             }
-            if (
-              errorMessage === "Firebase: Error (auth/email-already-in-use)."
-            ) {
+            if (errorMsg.includes("auth/email-already-in-use")) {
               return { success: false, error: "This email is already in use" };
             }
-            return { success: false, error: errorMessage };
+            return { success: false, error: errorMsg };
           }
         },
         user,
