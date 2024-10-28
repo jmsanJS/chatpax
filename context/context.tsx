@@ -66,7 +66,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
         updateUserData(newUser.uid);
         setUser(newUser);
         setIsAuthenticated(true);
-      } else if (user !== null) {
+      } else {
         setUser(null);
         setIsAuthenticated(false);
       }
