@@ -9,15 +9,15 @@ const MainLayout = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const inApp = segments[0] == "(app)";
+    const inApp = segments[0] === "(app)";
     if (isAuthenticated === undefined) return;
 
     if (isAuthenticated && !inApp) {
       router.replace("/home");
-    } else if (isAuthenticated === false) {
+    } else if (!isAuthenticated) {
       router.replace("/signIn");
     }
-  }, [isAuthenticated]);
+  }, []);
 
   return <Slot />;
 };
