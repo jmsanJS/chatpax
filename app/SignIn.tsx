@@ -17,7 +17,7 @@ import { StatusBar } from "expo-status-bar";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Loading from "@/components/Loading";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
-import Animated, { FadeInUp, FadeInDown } from "react-native-reanimated";
+import Animated, { FadeInUp, FadeInDown, FadeIn, Easing } from "react-native-reanimated";
 
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
@@ -61,7 +61,12 @@ export default function SignInScreen() {
 
   return (
     <CustomKeyboardView inChat={false}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
+      <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} style={styles.topDesignContainer}>
+        <View style={styles.topDesign}></View>
+        <View style={styles.bottomDesign}></View>
+      </Animated.View>
+
       <View style={styles.container}>
         <Animated.Text
           entering={FadeInUp.springify().mass(1)}
@@ -135,11 +140,7 @@ export default function SignInScreen() {
 
         <Animated.View
           entering={FadeInDown.springify().delay(350)}
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            paddingVertical: 10,
-          }}
+          style={styles.noAccount}
         >
           <Text style={styles.signUpQuestion}>Don't have an account? </Text>
           <Pressable onPress={() => router.push("/signUp")}>
@@ -147,16 +148,40 @@ export default function SignInScreen() {
           </Pressable>
         </Animated.View>
       </View>
+
+      <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} style={styles.bottomDesignContainer}>
+        <View style={styles.bottomDesignTop}></View>
+        <View style={styles.bottomDesignBottom}></View>
+      </Animated.View>
     </CustomKeyboardView>
   );
 }
 
 const styles = StyleSheet.create({
+  topDesignContainer: {
+    position: "absolute",
+  },
+  topDesign: {
+    backgroundColor: "magenta",
+    height: hp(30),
+    width: wp(100),
+    opacity: 0.5,
+  },
+  bottomDesign: {
+    backgroundColor: "#fff",
+    marginTop: hp(-15),
+    zIndex: 1,
+    width: wp(100),
+    height: hp(30),
+    borderTopStartRadius: wp(100),
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     height: hp(100),
+    zIndex: 2,
+
   },
   title: {
     fontSize: hp(4.5),
@@ -192,7 +217,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 16,
     textAlign: "right",
-    marginTop: 10,
+    marginTop: 15,
     marginBottom: 25,
   },
   btn: {
@@ -213,6 +238,11 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     padding: 15,
   },
+  noAccount: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingVertical: 25,
+  },
   signUpQuestion: {
     color: "gray",
     fontWeight: "500",
@@ -222,5 +252,23 @@ const styles = StyleSheet.create({
     color: "magenta",
     fontWeight: "500",
     fontSize: 16,
+  },
+  bottomDesignContainer: {
+    position: "absolute",
+    bottom: 0,
+  },
+  bottomDesignTop: {
+    backgroundColor: "#fff",
+    marginBottom: hp(-15),
+    zIndex: 1,
+    width: wp(100),
+    height: hp(30),
+    borderBottomEndRadius: wp(100),
+  },
+  bottomDesignBottom: {
+    backgroundColor: "magenta",
+    height: hp(30),
+    width: wp(100),
+    opacity: 0.5,
   },
 });

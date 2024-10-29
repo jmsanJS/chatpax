@@ -18,7 +18,7 @@ import Loading from "@/components/Loading";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
 import { StatusBar } from "expo-status-bar";
-import Animated, { FadeInUp, FadeInDown } from "react-native-reanimated";
+import Animated, { FadeInUp, FadeInDown, FadeIn, Easing } from "react-native-reanimated";
 
 export default function SignUpScreen() {
   const [username, setUsername] = useState("");
@@ -52,7 +52,12 @@ export default function SignUpScreen() {
 
   return (
     <CustomKeyboardView inChat={false}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
+      <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} style={styles.topDesignContainer}>
+        <View style={styles.topDesign}></View>
+        <View style={styles.bottomDesign}></View>
+      </Animated.View>
+
       <View style={styles.container}>
         <Animated.Text
           entering={FadeInUp.springify().mass(1)}
@@ -166,11 +171,7 @@ export default function SignUpScreen() {
         </Animated.View>
         <Animated.View
           entering={FadeInDown.springify().delay(400)}
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            paddingVertical: 10,
-          }}
+          style={styles.haveAnAccount}
         >
           <Text style={styles.signInQuestion}>Do you have an account? </Text>
           <Pressable onPress={() => router.push("/signIn")}>
@@ -178,16 +179,39 @@ export default function SignUpScreen() {
           </Pressable>
         </Animated.View>
       </View>
+
+      <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} style={styles.bottomDesignContainer}>
+        <View style={styles.bottomDesignTop}></View>
+        <View style={styles.bottomDesignBottom}></View>
+      </Animated.View>
     </CustomKeyboardView>
   );
 }
 
 const styles = StyleSheet.create({
+  topDesignContainer: {
+    position: "absolute",
+  },
+  topDesign: {
+    backgroundColor: "magenta",
+    height: hp(20),
+    width: wp(100),
+    opacity: 0.5,
+  },
+  bottomDesign: {
+    backgroundColor: "#fff",
+    marginTop: hp(-10),
+    zIndex: 1,
+    width: wp(100),
+    height: hp(20),
+    borderTopStartRadius: wp(100),
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     height: hp(100),
+    zIndex: 2,
   },
   signInForm: {},
   title: {
@@ -254,6 +278,11 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     padding: 15,
   },
+  haveAnAccount: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingTop: 25,
+  },
   signInQuestion: {
     color: "gray",
     fontWeight: "500",
@@ -263,5 +292,23 @@ const styles = StyleSheet.create({
     color: "magenta",
     fontWeight: "500",
     fontSize: 16,
+  },
+  bottomDesignContainer: {
+    position: "absolute",
+    bottom: 0,
+  },
+  bottomDesignTop: {
+    backgroundColor: "#fff",
+    marginBottom: hp(-10),
+    zIndex: 1,
+    width: wp(100),
+    height: hp(20),
+    borderBottomEndRadius: wp(100),
+  },
+  bottomDesignBottom: {
+    backgroundColor: "magenta",
+    height: hp(20),
+    width: wp(100),
+    opacity: 0.5,
   },
 });
