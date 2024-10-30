@@ -17,4 +17,6 @@
 
 ### Demo:
 
-<img src="/assets/screens-img/home-screen.png" width="250">
+[Watch the demo video](https://github.com/user-attachments/assets/bb832ce4-6321-4784-818e-8668a569d20e)
+
+
