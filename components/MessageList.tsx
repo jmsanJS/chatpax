@@ -9,7 +9,7 @@ export default function MessageList({ messages, currentUser, lastMsgScrollViewRe
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingTop: 15 }}
-      ref={lastMsgScrollViewRef}
+      ref={lastMsgScrollViewRef} // ref from chatRoom
     >
       {messages.map((message: MessageProps, index: number) => {
         return (

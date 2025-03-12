@@ -1,12 +1,4 @@
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Alert,
-  Keyboard,
-} from "react-native";
+import { View, ScrollView, StyleSheet, TextInput, Pressable, Alert, Keyboard } from "react-native";
 import React, { useEffect, useRef } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -14,24 +6,11 @@ import ChatRoomHeader from "@/components/ChatRoomHeader";
 import { useState } from "react";
 import MessageList from "@/components/MessageList";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
 import { UserData } from "@/types";
 import { getRoomId } from "@/modules/getRoomId";
-import {
-  addDoc,
-  collection,
-  doc,
-  DocumentData,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc,
-  Timestamp,
-} from "firebase/firestore";
+import { addDoc, collection, doc, DocumentData, onSnapshot, orderBy, query, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useSession } from "@/context/context";
 
@@ -70,6 +49,8 @@ export default function ChatRoomScreen() {
     };
   }, []);
 
+  // Update the last message scroll view when new message is added
+  // (Pass the ref to the MessageList component)
   useEffect(() => {
     updateLastMsgScrollView();
   }, [messages]);
